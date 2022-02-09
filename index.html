@@ -86,6 +86,7 @@
 
   window.addEventListener(CY.modules().FACE_AGE.eventName, (evt) => {
     age_div.innerHTML = 'Likely Age: ' + evt.detail.output.numericAge + ' years';
+    console.log('Age', evt.detail);
   });
 
   window.addEventListener(CY.modules().FACE_GENDER.eventName, (evt) => {
