@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+<title>My Website</title>
+<meta name="mphtools-feature" content="compatibilityUI, cameraPrivacyPopup, compatibilityAutoCheck">
+</head>
+
+<body>
+
+<h1>Welcome!</h1>
+<p>This is my website. I hope you like it here!</p>
+<p><b>Here is some bold text for emphasis.</b></p>
+<p><i>Italics can be creepy.</i></p>
+<script src="https://sdk.morphcast.com/mphtools/v1.0/mphtools.js"></script>
+<script src="https://ai-sdk.morphcast.com/v1.15/ai-sdk.js"></script>
+<script>
+CY.loader()
+  .licenseKey("b787f9d1d485505d611cc4d379b8012f6eff0bb7cfed")
+  .addModule(CY.modules().FACE_DETECTOR.name)
+  .load()
+  .then(({ start, stop }) => start());
+
+window.addEventListener(CY.modules().FACE_DETECTOR.eventName, (evt) => {
+  console.log('Face detector result', evt.detail);
+});
+</script>
+
+</body>
+</html>
