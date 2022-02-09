@@ -3,12 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>MorphCast SDK - Demo with graphical elements</title>
-    <style lang="css">
-        body {
-            background-color: #666666;
-            color: #FFFFFF;
-        }
-
+    <style>
         #start_over {
             position: absolute;
             background-color: #7F8C8D;
@@ -34,18 +29,15 @@
             text-align: center;
         }
 
-        .wrapper {
-            position: relative;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
+        #myProgress {
+            width: 50%;
+            background-color: gray;
         }
 
-        .charts {
-            width: 100%;
-            height: 100%;
-            max-height: 100%;
-            max-width: 100%;
+        #myBar {
+            width: 1%;
+            height: 30px;
+            background-color: green;
         }
     </style>
     <!-- configuration for the Alert plugin -->
@@ -56,26 +48,35 @@
 <script src="https://sdk.morphcast.com/mphtools/v1.0/mphtools.js"></script>
 <!-- include MorphCast SDK -->
 <script src="https://ai-sdk.morphcast.com/v1.14/ai-sdk.js"></script>
-<!-- include chart -->
-<script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+<!-- include radar chart -->
+<script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
 
 <!-- elements of the page -->
-<div><b>Emotion Detection Results</b></div>
-<div class="wrapper">
-    <canvas class="charts" id="chart"></canvas>
-</div>
+<div><b>Results</b></div>
+<div id="age">Likely Age: -</div>
+<div id="gender">Likely Gender: -</div>
+<div id="emotion">Dominant Emotion: -</div>
+<span>Histogram of Emotions:</span>
+<div id="chart"></div>
 <div id="start_over">
     <span>CLICK TO START</span>
 </div>
+<span>Attention level:</span>
+<div id="myProgress">
+    <div id="myBar"></div>
+</div>
 
-<script type="module">
+<script>
   // Complete code documentation of MorphCast AI SDK, here:
   // https://ai-sdk.morphcast.com/latest/index.html
 
   const initSDK = new Promise((res) => {
     res(CY.loader()
       .licenseKey("b787f9d1d485505d611cc4d379b8012f6eff0bb7cfed")
+      .addModule(CY.modules().FACE_AGE.name)
+      .addModule(CY.modules().FACE_GENDER.name)
       .addModule(CY.modules().FACE_EMOTION.name)
+      .addModule(CY.modules().FACE_ATTENTION.name)
       .load());
   });
 
@@ -83,33 +84,41 @@
   Event listeners for MorphCast SDK output
    */
 
-  import {EmoChart} from './emotion-chart.js';
-  const el = document.getElementById('chart');
+  window.addEventListener(CY.modules().FACE_AGE.eventName, (evt) => {
+    age_div.innerHTML = 'Likely Age: ' + evt.detail.output.numericAge + ' years';
+  });
 
-  let startTime = Date.now();
-  let noDataTimeOut;
+  window.addEventListener(CY.modules().FACE_GENDER.eventName, (evt) => {
+    gen_div.innerHTML = 'Likely Gender: ' + evt.detail.output.mostConfident;
+  });
 
-  function updateNoData() {
-    chart.updateNoData(getCurrentTime());
-    noDataTimeOut = setTimeout(() => updateNoData(), 500);
-  }
-  function resetTimeout() {
-    clearTimeout(noDataTimeOut);
-    noDataTimeOut = setTimeout(() => updateNoData(), 500);
-  }
-  function getCurrentTime() {
-    return (Date.now() - startTime)/1000;
-  }
-
-  const chart = new EmoChart(el);
-  chart.visible = true;
-  chart.reset();
-  resetTimeout();
   window.addEventListener(CY.modules().FACE_EMOTION.eventName, (evt) => {
-    resetTimeout();
+    emo_div.innerHTML = 'Dominant Emotion: ' + evt.detail.output.dominantEmotion;
 
     // data for the histogram
-    chart.update(getCurrentTime(), evt.detail.output.emotion);
+    const emotions = evt.detail.output.emotion;
+    const labels = [];
+    const data = [];
+
+    Object.keys(emotions).forEach(k => {
+      labels.push(k);
+      data.push(parseInt((emotions[k] * 100).toFixed(0)));
+    });
+
+    chart.updateOptions({
+      labels: labels,
+      series:[{
+        name: 'Emotion',
+        data: data
+      }]
+    });
+  });
+
+  window.addEventListener(CY.modules().FACE_ATTENTION.eventName, (evt) => {
+    const attention = evt.detail.output.attention;
+
+    const elem = document.getElementById("myBar");
+    elem.style.width = attention * 100 + "%";
   });
 
   /*
@@ -122,6 +131,29 @@
     startButton.style.display = "none";
     initSDK.then(({start}) => start());
   };
+
+  const age_div = document.querySelector("#age");
+  const gen_div = document.querySelector("#gender");
+  const emo_div = document.querySelector("#emotion");
+
+  const options = {
+    chart: {
+      height: 350,
+      width: 500,
+      type: 'bar'
+    },
+    yaxis: {
+      min:0,
+      max:100
+    },
+    series:[],
+    title: {
+      text: ''
+    },
+    labels:[]
+  };
+  const chart = new ApexCharts(document.querySelector("#chart"), options);
+  chart.render();
 
 </script>
 </body>
