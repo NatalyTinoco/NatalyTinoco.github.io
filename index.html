@@ -86,22 +86,22 @@
 
   window.addEventListener(CY.modules().FACE_AGE.eventName, (evt) => {
     age_div.innerHTML = 'Likely Age: ' + evt.detail.output.numericAge + ' years';
-    console.log('Age', evt.detail.output.numericAge);
+    console.log('Age:', evt.detail.output.numericAge);
   });
 
   window.addEventListener(CY.modules().FACE_GENDER.eventName, (evt) => {
     gen_div.innerHTML = 'Likely Gender: ' + evt.detail.output.mostConfident;
-    console.log('Gender', evt.detail.output.mostConfident);
+    console.log('Gender:', evt.detail.output.mostConfident);
   });
 
   window.addEventListener(CY.modules().FACE_EMOTION.eventName, (evt) => {
     emo_div.innerHTML = 'Dominant Emotion: ' + evt.detail.output.dominantEmotion;
-    console.log('Dominant Emotion', evt.detail.output.dominantEmotion);
+    console.log('Dominant Emotion:', evt.detail.output.dominantEmotion);
     // data for the histogram
     const emotions = evt.detail.output.emotion;
     const labels = [];
     const data = [];
-
+    console.log('Emotion:',evt.detail.output.emotion);
     Object.keys(emotions).forEach(k => {
       labels.push(k);
       data.push(parseInt((emotions[k] * 100).toFixed(0)));
@@ -118,7 +118,7 @@
 
   window.addEventListener(CY.modules().FACE_ATTENTION.eventName, (evt) => {
     const attention = evt.detail.output.attention;
-
+    console.log('Attention:',  evt.detail.output.attention);
     const elem = document.getElementById("myBar");
     elem.style.width = attention * 100 + "%";
   });
