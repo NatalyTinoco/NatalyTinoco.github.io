@@ -102,7 +102,7 @@
     const emotions = evt.detail.output.emotion;
     const labels = [];
     const data = [];
-    console.log('Emotion:',evt.detail.output.emotion[0]);
+    console.log('EmotionS:',evt.detail.output.emotion.Fear);
     Object.keys(emotions).forEach(k => {
       labels.push(k);
       data.push(parseInt((emotions[k] * 100).toFixed(0)));  
