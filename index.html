@@ -81,21 +81,6 @@
       .load());
   });
     
-  /* 
-   Fecha actual
-    */
-  var today = new Date();
-  var dd = String(today.getDate()).padStart(2, '0');
-  var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
-  var yyyy = today.getFullYear();
-
-  today = mm + '/' + dd + '/' + yyyy;
-  document.write(today); 
-  //date_div.innerHTML = 'Date: ' + today;
-  console.log('Date:', today);
-
-   
-
   /*
   Event listeners for MorphCast SDK output
    */
@@ -110,6 +95,18 @@
     gen_div.innerHTML = 'Likely Gender: ' + evt.detail.output.mostConfident;
     console.log('Gender:', evt.detail.output.mostConfident);
   });
+ /* 
+   Fecha actual
+    */
+  var today = new Date();
+  var dd = String(today.getDate()).padStart(2, '0');
+  var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+  var yyyy = today.getFullYear();
+
+  today = mm + '/' + dd + '/' + yyyy;
+  document.write(today); 
+  //date_div.innerHTML = 'Date: ' + today;
+ 
 
   window.addEventListener(CY.modules().FACE_EMOTION.eventName, (evt) => {
     emo_div.innerHTML = 'Dominant Emotion: ' + evt.detail.output.dominantEmotion;
@@ -118,6 +115,7 @@
     const emotions = evt.detail.output.emotion;
     const labels = [];
     const data = [];
+    console.log('Date:', today);
     console.log('Angry:',evt.detail.output.emotion.Angry);
     console.log('Disgust:',evt.detail.output.emotion.Disgust);
     console.log('Fear:',evt.detail.output.emotion.Fear);
@@ -125,8 +123,7 @@
     console.log('Neutral:',evt.detail.output.emotion.Neutral);
     console.log('Sad:',evt.detail.output.emotion.Sad);
     console.log('Surprise:',evt.detail.output.emotion.Surprise);
-    console.log('----------------');
-   
+       
     Object.keys(emotions).forEach(k => {
       labels.push(k);
       data.push(parseInt((emotions[k] * 100).toFixed(0)));  
@@ -144,6 +141,7 @@
   window.addEventListener(CY.modules().FACE_ATTENTION.eventName, (evt) => {
     const attention = evt.detail.output.attention;
     console.log('Attention:',  evt.detail.output.attention);
+    console.log(';');
     const elem = document.getElementById("myBar");
     elem.style.width = attention * 100 + "%";
   });
