@@ -85,11 +85,18 @@
   Event listeners for MorphCast SDK output
    */
     
-
+  var today = new Date();
+  var dd = String(today.getDate()).padStart(2, '0');
+  var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+  var yyyy = today.getFullYear();
+  today = mm + '/' + dd + '/' + yyyy;
+  document.write(today);
+    
   window.addEventListener(CY.modules().FACE_AGE.eventName, (evt) => {
     age_div.innerHTML = 'Likely Age: ' + evt.detail.output.numericAge + ' years';
     var myDate = new Date().toTimeString().replace(/.*(\d{2}:\d{2}:\d{2}).*/, "$1");
-    console.log('Date:', myDate)
+    console.log('Date:', today)
+    console.log('Hour:', myDate)
     console.log('Age:', evt.detail.output.numericAge);
   });
 
