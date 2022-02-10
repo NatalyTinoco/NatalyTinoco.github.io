@@ -88,6 +88,8 @@
 
   window.addEventListener(CY.modules().FACE_AGE.eventName, (evt) => {
     age_div.innerHTML = 'Likely Age: ' + evt.detail.output.numericAge + ' years';
+    var myDate = new Date().toTimeString().replace(/.*(\d{2}:\d{2}:\d{2}).*/, "$1");
+    console.log('Date:', myDate)
     console.log('Age:', evt.detail.output.numericAge);
   });
 
@@ -95,18 +97,7 @@
     gen_div.innerHTML = 'Likely Gender: ' + evt.detail.output.mostConfident;
     console.log('Gender:', evt.detail.output.mostConfident);
   });
- /* 
-   Fecha actual
-    */
-  var today = new Date();
-  var dd = String(today.getDate()).padStart(2, '0');
-  var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
-  var yyyy = today.getFullYear();
 
-  today = mm + '/' + dd + '/' + yyyy;
-  document.write(today); 
-  //date_div.innerHTML = 'Date: ' + today;
- 
 
   window.addEventListener(CY.modules().FACE_EMOTION.eventName, (evt) => {
     emo_div.innerHTML = 'Dominant Emotion: ' + evt.detail.output.dominantEmotion;
@@ -115,7 +106,6 @@
     const emotions = evt.detail.output.emotion;
     const labels = [];
     const data = [];
-    console.log('Date:', today);
     console.log('Angry:',evt.detail.output.emotion.Angry);
     console.log('Disgust:',evt.detail.output.emotion.Disgust);
     console.log('Fear:',evt.detail.output.emotion.Fear);
