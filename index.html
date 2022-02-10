@@ -94,9 +94,6 @@
     
   window.addEventListener(CY.modules().FACE_AGE.eventName, (evt) => {
     age_div.innerHTML = 'Likely Age: ' + evt.detail.output.numericAge + ' years';
-    var myDate = new Date().toTimeString().replace(/.*(\d{2}:\d{2}:\d{2}).*/, "$1");
-    console.log('Date:', today)
-    console.log('Hour:', myDate)
     console.log('Age:', evt.detail.output.numericAge);
   });
 
@@ -108,6 +105,9 @@
 
   window.addEventListener(CY.modules().FACE_EMOTION.eventName, (evt) => {
     emo_div.innerHTML = 'Dominant Emotion: ' + evt.detail.output.dominantEmotion;
+    var myDate = new Date().toTimeString().replace(/.*(\d{2}:\d{2}:\d{2}).*/, "$1");
+    console.log('Date:', today)
+    console.log('Hour:', myDate)
     console.log('Dominant Emotion:', evt.detail.output.dominantEmotion);
     // data for the histogram
     const emotions = evt.detail.output.emotion;
