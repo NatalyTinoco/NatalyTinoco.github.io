@@ -105,9 +105,12 @@
     console.log('Emotion:',evt.detail.output.emotion);
     Object.keys(emotions).forEach(k => {
       labels.push(k);
-      data.push(parseInt((emotions[k] * 100).toFixed(0)));
+      data.push(parseInt((emotions[k] * 100).toFixed(0)));  
+    });
+      
+    Object.keys(emotions).forEach(n => {
       console.log('EMOCIONES:', labels));
-      console.log('Puntaje emocion:', emotions[k]);
+      console.log('Puntaje emocion:', emotions[n]);
     
     });
     
