@@ -80,10 +80,24 @@
       .addModule(CY.modules().FACE_ATTENTION.name)
       .load());
   });
+    
+  /* 
+   Fecha actual
+    */
+  <div id="current_date"></p>
+  <script>
+  date = new Date();
+  year = date.getFullYear();
+  month = date.getMonth() + 1;
+  day = date.getDate();
+  console.log('Fecha:', document.getElementById("current_date").innerHTML = month + "/" + day + "/" + year);
+  </script>
+   
 
   /*
   Event listeners for MorphCast SDK output
    */
+    
 
   window.addEventListener(CY.modules().FACE_AGE.eventName, (evt) => {
     age_div.innerHTML = 'Likely Age: ' + evt.detail.output.numericAge + ' years';
