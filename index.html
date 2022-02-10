@@ -102,7 +102,15 @@
     const emotions = evt.detail.output.emotion;
     const labels = [];
     const data = [];
-    console.log('EmotionS:',evt.detail.output.emotion.Fear);
+    console.log('Angry:',evt.detail.output.emotion.Angry);
+    console.log('Disgust:',evt.detail.output.emotion.Disgust);
+    console.log('Fear:',evt.detail.output.emotion.Fear);
+    console.log('Happy:',evt.detail.output.emotion.Happy);
+    console.log('Neutral:',evt.detail.output.emotion.Neutral);
+    console.log('Sad:',evt.detail.output.emotion.Sad);
+    console.log('Surprise:',evt.detail.output.emotion.Surprise);
+    console.log('----------------');
+   
     Object.keys(emotions).forEach(k => {
       labels.push(k);
       data.push(parseInt((emotions[k] * 100).toFixed(0)));  
