@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>TP Sentiment Analysis</title>
-    <style>
+     <style>
       .container{ width: 600px; float: left;}
       .title{ font-size: 12pt; font-weight: bold;}
         #analysis{
@@ -69,7 +69,7 @@
     <meta name="mphtools-feature" content="compatibilityUI, cameraPrivacyPopup, compatibilityAutoCheck">
 </head>
 <body>
-    <h1 style="text-align:left; font-family: segoe ui;"> Sentiment Analysis </h1>
+    <h1 style="text-align:center"> Sentiment Analysis </h1>
 <!-- include automatic alerts about browser and App compatibility -->
 <script src="https://sdk.morphcast.com/mphtools/v1.0/mphtools.js"></script>
 <!-- include MorphCast SDK -->
@@ -106,7 +106,7 @@
 
 <script>
   // Complete code documentation of MorphCast AI SDK, here:
-  // https://ai-sdk.morphcast.com/latest/index.html 
+  // https://ai-sdk.morphcast.com/latest/index.html
 
   const initSDK = new Promise((res) => {
     res(CY.loader()
@@ -127,21 +127,18 @@
   var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
   var yyyy = today.getFullYear();
   today = mm + '/' + dd + '/' + yyyy;
-  // document.write(today);
-  
+  document.write(today);
+    
   window.addEventListener(CY.modules().FACE_AGE.eventName, (evt) => {
     age_div.innerHTML = 'Likely Age: ' + evt.detail.output.numericAge + ' years';
-    var timeAge = new Date().toTimeString().replace(/.*(\d{2}:\d{2}:\d{2}).*/, "$1");  
-    let age = evt.detail.output.numericAge;
     console.log('Age:', evt.detail.output.numericAge);
   });
 
   window.addEventListener(CY.modules().FACE_GENDER.eventName, (evt) => {
     gen_div.innerHTML = 'Likely Gender: ' + evt.detail.output.mostConfident;
-    let gender = evt.detail.output.mostConfident;
-    var timeGender = new Date().toTimeString().replace(/.*(\d{2}:\d{2}:\d{2}).*/, "$1");    
-    console.log('Gender:', evt.detail.output.mostConfident);  
+    console.log('Gender:', evt.detail.output.mostConfident);
   });
+
 
   window.addEventListener(CY.modules().FACE_EMOTION.eventName, (evt) => {
     emo_div.innerHTML = 'Dominant Emotion: ' + evt.detail.output.dominantEmotion;
@@ -160,8 +157,7 @@
     console.log('Neutral:',evt.detail.output.emotion.Neutral);
     console.log('Sad:',evt.detail.output.emotion.Sad);
     console.log('Surprise:',evt.detail.output.emotion.Surprise);
-    
-
+       
     Object.keys(emotions).forEach(k => {
       labels.push(k);
       data.push(parseInt((emotions[k] * 100).toFixed(0)));  
@@ -175,15 +171,13 @@
       }]
     });
   });
-  
 
   window.addEventListener(CY.modules().FACE_ATTENTION.eventName, (evt) => {
-    let attention = evt.detail.output.attention;
+    const attention = evt.detail.output.attention;
     console.log('Attention:',  evt.detail.output.attention);
     console.log(';');
     const elem = document.getElementById("myBar");
     elem.style.width = attention * 100 + "%";
-    var myDate1 = new Date().toTimeString().replace(/.*(\d{2}:\d{2}:\d{2}).*/, "$1");
   });
 
   var video = document.querySelector("#videoElement");
@@ -197,6 +191,7 @@
           console.log("Something went wrong!");
         });
     };
+
   /*
   Elements of the page
    */
@@ -218,9 +213,7 @@
       width: 500,
       type: 'bar'
     },
-    colors: [
-      '#7C0098', '#D60088'
-    ],
+    colors: ['#7C0098'],
     yaxis: {
       min:0,
       max:100
