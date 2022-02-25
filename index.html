@@ -128,65 +128,21 @@
   var yyyy = today.getFullYear();
   today = mm + '/' + dd + '/' + yyyy;
   // document.write(today);
-
-  function sendAgeData(age, hour){  
-    
-    fetch("http://localhost:5000/insert_age", {
-        method: "POST",     // método
-        mode: "cors",    // política de cors
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({age: age, hour: hour})        
-    })
-    .then(response => response.json()
-    .then(json => console.log(json)))
-    .catch(error => alert(error.message));
-}  
-  
   
   window.addEventListener(CY.modules().FACE_AGE.eventName, (evt) => {
     age_div.innerHTML = 'Likely Age: ' + evt.detail.output.numericAge + ' years';
     var timeAge = new Date().toTimeString().replace(/.*(\d{2}:\d{2}:\d{2}).*/, "$1");  
     let age = evt.detail.output.numericAge;
-    sendAgeData(age, timeAge);
     console.log('Age:', evt.detail.output.numericAge);
   });
 
-  function sendGenderData(gender, hour){  
-    
-    fetch("http://localhost:5000/insert_gender", {
-        method: "POST",     // método
-        mode: "cors",    // política de cors
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({gender: gender, hour: hour})        
-    })
-    .then(response => response.json()
-    .then(json => console.log(json)))
-    .catch(error => alert(error.message));
-}
-  var counter_gender = 0; 
   window.addEventListener(CY.modules().FACE_GENDER.eventName, (evt) => {
     gen_div.innerHTML = 'Likely Gender: ' + evt.detail.output.mostConfident;
     let gender = evt.detail.output.mostConfident;
     var timeGender = new Date().toTimeString().replace(/.*(\d{2}:\d{2}:\d{2}).*/, "$1");    
-    console.log('Gender:', evt.detail.output.mostConfident);
-    counter_gender += 1;
-    if (counter_gender % 5 == 0) {sendGenderData(gender, timeGender);}    
+    console.log('Gender:', evt.detail.output.mostConfident);  
   });
 
-  function sendEmotionData(angry, disgust, fear, happy, neutral, sad, surprise, hour){
-    
-    fetch("http://localhost:5000/insert_emotion", {
-        method: "POST",     // método
-        mode: "cors",    // política de cors
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({angry: angry, disgust: disgust, fear: fear, happy: happy, neutral: neutral, 
-                              sad: sad, surprise: surprise, hour: hour})        
-    })
-    .then(response => response.json()
-    .then(json => console.log(json)))
-    .catch(error => alert(error.message));
-}
-  counter_emotion = 0;
   window.addEventListener(CY.modules().FACE_EMOTION.eventName, (evt) => {
     emo_div.innerHTML = 'Dominant Emotion: ' + evt.detail.output.dominantEmotion;
     var myDate = new Date().toTimeString().replace(/.*(\d{2}:\d{2}:\d{2}).*/, "$1");
@@ -197,15 +153,6 @@
     const emotions = evt.detail.output.emotion;
     const labels = [];
     const data = [];
-    let angry = evt.detail.output.emotion.Angry;
-    let disgust = evt.detail.output.emotion.Disgust;
-    let fear = evt.detail.output.emotion.Fear;
-    let happy = evt.detail.output.emotion.Happy;
-    let neutral = evt.detail.output.emotion.Neutral;
-    let sad = evt.detail.output.emotion.Sad;
-    let surprise = evt.detail.output.emotion.Surprise;
-    counter_emotion += 1;
-    if (counter_emotion % 10 == 0) {sendEmotionData(angry, disgust, fear, happy, neutral, sad, surprise, myDate);}
     console.log('Angry:',evt.detail.output.emotion.Angry);
     console.log('Disgust:',evt.detail.output.emotion.Disgust);
     console.log('Fear:',evt.detail.output.emotion.Fear);
@@ -229,21 +176,6 @@
     });
   });
   
-  function sendAttentionData(attention, hour){
-  //function sendData(time, attention) {
-    
-    fetch("http://localhost:5000/insert_attention", {
-        method: "POST",     // método
-        mode: "cors",    // política de cors
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({attention: attention, hour: hour})
-        //body: JSON.stringify({ time: time, attention: attention })
-    })
-    .then(response => response.json()
-    .then(json => console.log(json)))
-    .catch(error => alert(error.message));
-}
-  var counter_attention = 1;
 
   window.addEventListener(CY.modules().FACE_ATTENTION.eventName, (evt) => {
     let attention = evt.detail.output.attention;
@@ -252,10 +184,6 @@
     const elem = document.getElementById("myBar");
     elem.style.width = attention * 100 + "%";
     var myDate1 = new Date().toTimeString().replace(/.*(\d{2}:\d{2}:\d{2}).*/, "$1");
-    counter_attention += 1;
-    //var seconds = today.getSeconds();
-    if (counter_attention % 10 == 0) {sendAttentionData(attention, myDate1);}    
-    //sendData(today, attention)
   });
 
   var video = document.querySelector("#videoElement");
